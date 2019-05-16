@@ -1,5 +1,5 @@
 ---
-acme_certificate_group: letsencrypt
+acme_certificate_group: acme
 acme_certificate_group_members: []
 acme_certificate_add_ca: "{{ certificate_add_ca | default(False) }}"
 acme_certificate_basedir: /etc/letsencrypt
