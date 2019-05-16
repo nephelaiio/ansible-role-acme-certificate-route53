@@ -7,6 +7,8 @@ acme_certificate_certdir: "{{ acme_certificate_basedir }}/live"
 acme_certificate_keydir: "{{ acme_certificate_basedir }}/keys"
 acme_certificate_account_keyfile: "{{ acme_certificate_keydir }}/id_rsa.letsencrypt"
 acme_certificate_domain: "{{ ansible_fqdn }}"
+acme_certificate_aws_accesskey_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+acme_certificate_aws_accesskey_secret: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
 acme_certificate_zone: "{{ acme_certificate_domain | split_with('.') | tail | join('.') }}"
 acme_certificate_caurl: https://letsencrypt.org/certs/isrgrootx1.pem.txt
 acme_certificate_intcaurl: https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt
