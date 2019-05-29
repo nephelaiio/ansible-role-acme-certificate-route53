@@ -18,8 +18,8 @@ The most common user overridable parameters for the role are
 | no | acme_certificate_add_ca | add acme ca to the  | boolean | false |
 | no | acme_certificate_caurl | url to ca certificate | string | https://letsencrypt.org/certs/isrgrootx1.pem.txt |
 | no | acme_certificate_intcaurl | url to ca intermediate certificate | string | https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt |
-| no | acme_certificate_directory | url to ca directory | string | https://acme-v01.api.letsencrypt.org/directory (letsencrypt production url) |
-| no | acme_certificate_cafile (*) | define to create symlink to issuing ca cert file | string | __undefined_ |
+| no | acme_certificate_directory | url to ca directory | string | https://acme-v01.api.letsencrypt.org/directory |
+| no | acme_certificate_cafile (*) | define to create symlink to issuing ca cert file | string | _undefined_ |
 | no | acme_certificate_intcafile (*) | define to create symlink to issuing intermediate ca cert file | string | _undefined_ |
 | no | acme_certificate_certfile (*) | define to create symlink to cert file | string | _undefined_ |
 | no | acme_certificate_chainfile (*) | define to create symlink to certificate chain file | string | _undefined_ |
