@@ -10,7 +10,7 @@ An [ansible role](https://galaxy.ansible.com/nephelaiio/acme-dnschallenge-route5
 The most common user overridable parameters for the role are
 
 | required | variable | description | default |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | *yes* | acme_certificate_domain | the fqdn to generate an acme certificate for | "{{ ansible_fqdn }}" |
 | *yes* | acme_certificate_aws_accesskey_id | an ec2 key id with route53 management rights | "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}" |
 | *yes* | acme_certificate_aws_accesskey_secret  | an ec2 key secret | "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}" |
