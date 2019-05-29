@@ -9,21 +9,21 @@ An [ansible role](https://galaxy.ansible.com/nephelaiio/acme-dnschallenge-route5
 
 The most common user overridable parameters for the role are
 
-| required | variable | description | type | default |
+| required | variable | description | default |
 | --- | --- | --- | --- | --- |
-| *yes* | acme_certificate_domain | the fqdn to generate an acme certificate for | string | "{{ ansible_fqdn }}" |
-| *yes* | acme_certificate_aws_accesskey_id | an ec2 key id with route53 management rights | string | "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}" |
-| *yes* | acme_certificate_aws_accesskey_secret  | an ec2 key secret | string | "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}" |
-| no | acme_certificate_group_members | members to add to the owner group for certificate files | [string] | [] |
-| no | acme_certificate_add_ca | add acme ca to the  | boolean | false |
-| no | acme_certificate_caurl | url to ca certificate | string | https://letsencrypt.org/certs/isrgrootx1.pem.txt |
-| no | acme_certificate_intcaurl | url to ca intermediate certificate | string | https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt |
-| no | acme_certificate_directory | url to ca directory | string | https://acme-v01.api.letsencrypt.org/directory |
-| no | acme_certificate_cafile (*) | define to create symlink to issuing ca cert file | string | _undefined_ |
-| no | acme_certificate_intcafile (*) | define to create symlink to issuing intermediate ca cert file | string | _undefined_ |
-| no | acme_certificate_certfile (*) | define to create symlink to cert file | string | _undefined_ |
-| no | acme_certificate_chainfile (*) | define to create symlink to certificate chain file | string | _undefined_ |
-| no | acme_certificate_keyfile (*) | define to create symlink to certificate key file | string | _undefined_ |
+| *yes* | acme_certificate_domain | the fqdn to generate an acme certificate for | "{{ ansible_fqdn }}" |
+| *yes* | acme_certificate_aws_accesskey_id | an ec2 key id with route53 management rights | "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}" |
+| *yes* | acme_certificate_aws_accesskey_secret  | an ec2 key secret | "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}" |
+| no | acme_certificate_group_members | members to add to the owner group for certificate files | [] |
+| no | acme_certificate_add_ca | add acme ca to the  | false |
+| no | acme_certificate_caurl | url to ca certificate | https://letsencrypt.org/certs/isrgrootx1.pem.txt |
+| no | acme_certificate_intcaurl | url to ca intermediate certificate | https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt |
+| no | acme_certificate_directory | url to ca directory | https://acme-v01.api.letsencrypt.org/directory |
+| no | acme_certificate_cafile (*) | define to create symlink to issuing ca cert file | _undefined_ |
+| no | acme_certificate_intcafile (*) | define to create symlink to issuing intermediate ca cert file | _undefined_ |
+| no | acme_certificate_certfile (*) | define to create symlink to cert file | _undefined_ |
+| no | acme_certificate_chainfile (*) | define to create symlink to certificate chain file | _undefined_ |
+| no | acme_certificate_keyfile (*) | define to create symlink to certificate key file | _undefined_ |
 
 You can view an example redefinition of some of the above parameters, most notably the ones concerning certificate ca in the [CI test configuration file](/molecule/default/molecule.yml)
 
