@@ -16,8 +16,6 @@ The most common user overridable parameters for the role are
 | *yes* | acme_certificate_aws_accesskey_secret  | an ec2 key secret | lookup('env', 'AWS_SECRET_ACCESS_KEY') |
 | no | acme_certificate_group_members | certificate file group members | [] |
 | no | acme_certificate_add_ca | add acme ca to the  | false |
-| no | acme_certificate_caurl | url to ca certificate | https://letsencrypt.org/certs/isrgrootx1.pem.txt |
-| no | acme_certificate_intcaurl | url to ca intermediate certificate | https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt |
 | no | acme_certificate_directory | url to ca directory | https://acme-v01.api.letsencrypt.org/directory |
 | no | acme_certificate_cafile (*) | symlink path to issuing ca cert file | _undefined_ |
 | no | acme_certificate_intcafile (*) | symlink path to issuing intermediate ca cert file | _undefined_ |
