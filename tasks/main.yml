@@ -34,17 +34,28 @@
     - "{{ acme_certificate_keydir }}"
 
 - name: create key
-  shell: 'ssh-keygen -t rsa -b 2048 -C "{{ acme_certificate_email }}" -f {{ acme_certificate_account_keyfile }} -q -N ""'
+  shell: |
+    ssh-keygen -t rsa -b 2048 -q \
+      -C "{{ acme_certificate_email }}" \
+      -f {{ acme_certificate_account_keyfile }} -N ""
   args:
     creates: "{{ acme_certificate_account_keyfile }}"
 
 - name: create domain key
-  shell: 'ssh-keygen -t rsa -b 2048 -C "{{ acme_certificate_email }}" -f {{ _acme_certificate_domain_keyfile }} -q -N ""'
+  shell: |
+    ssh-keygen -t rsa -b 2048 -q \
+      -C "{{ acme_certificate_email }}" \
+      -f {{ _acme_certificate_domain_keyfile }} \
+      -N ""
   args:
     creates: "{{ _acme_certificate_domain_keyfile }}"
 
 - name: create csr
-  shell: 'openssl req -new -nodes -key {{ _acme_certificate_domain_keyfile }} -out {{ _acme_certificate_domain_csrfile }} -subj "/CN={{ acme_certificate_domain }}"'
+  shell: |
+    openssl req -new -nodes \
+      -key {{ _acme_certificate_domain_keyfile }} \
+      -out {{ _acme_certificate_domain_csrfile }} \
+      -subj "/CN={{ acme_certificate_domain }}"
   changed_when: false
 
 - name: create challenge
