@@ -44,7 +44,7 @@ See the [https://raw.githubusercontent.com/nephelaiio/ansible-role-requirements/
   vars:
     acme_certificate_email: ci@nephelai.io
     acme_certificate_domain: "{{ ansible_fqdn }}"
-    acme_certificate_aws_accesskey_id: "{{ lookup('env', 'AWS_AK_ID') }}"
+    acme_certificate_aws_accesskey_id: "{{ lookup('env', 'AWS_KEY_ID') }}"
     acme_certificate_aws_accesskey_secret: "{{ lookup('env', 'AWS_AK_SECRET') }}"
   roles:
     - role: nephelaiio.acme-dnschallenge-route53
