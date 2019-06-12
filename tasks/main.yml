@@ -39,7 +39,7 @@
       -C "{{ acme_certificate_email }}" \
       -f {{ acme_certificate_account_keyfile }} -N ""
   args:
-    creates: "{{ acme_certificate_account_keyfile }}"
+    creates: "{{ acme_certificate_account_keyfile }}"  # noqa 305
 
 - name: create domain key
   shell: |
@@ -48,7 +48,7 @@
       -f {{ _acme_certificate_domain_keyfile }} \
       -N ""
   args:
-    creates: "{{ _acme_certificate_domain_keyfile }}"
+    creates: "{{ _acme_certificate_domain_keyfile }}"  # noqa 305
 
 - name: create csr
   shell: |
@@ -56,7 +56,7 @@
       -key {{ _acme_certificate_domain_keyfile }} \
       -out {{ _acme_certificate_domain_csrfile }} \
       -subj "/CN={{ acme_certificate_domain }}"
-  changed_when: false
+  changed_when: false  # noqa 305
 
 - name: create challenge
   acme_certificate:
@@ -67,15 +67,6 @@
     fullchain_dest: "{{ _acme_certificate_domain_chainfile }}"
     terms_agreed: yes
   register: acme_certificate_challenge
-
-- name: install epel
-  include_role:
-    name: geerlingguy.repo-epel
-  when: ansible_os_family == 'RedHat'
-
-- name: install pip
-  include_role:
-    name: nephelaiio.pip
 
 - name: install route53 dependencies
   pip:
