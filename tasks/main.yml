@@ -72,52 +72,56 @@
   pip:
     name: boto
 
-- name: create route53 txt record for certificate validation
-  route53:
-    command: create
-    aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
-    aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
-    zone: "{{ acme_certificate_zone }}"
-    record: "{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['resource'] }}.{{ acme_certificate_domain }}"
-    retry_interval: 300
-    type: TXT
-    ttl: 7200
-    value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
-    wait: yes
-    overwrite: yes
-  when: "'challenge_data' in acme_certificate_challenge"
+- block:
 
-- name: wait for txt record propagation
-  pause:
-    seconds: 60
-  when: "'challenge_data' in acme_certificate_challenge"
+    - name: create route53 txt record for certificate validation
+      route53:
+        command: create
+        aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
+        aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
+        zone: "{{ acme_certificate_zone }}"
+        record: "{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['resource'] }}.{{ acme_certificate_domain }}"
+        retry_interval: 300
+        type: TXT
+        ttl: 7200
+        value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
+        wait: yes
+        overwrite: yes
+      when: "'challenge_data' in acme_certificate_challenge"
 
-- name: validate challenge
-  acme_certificate:
-    account_key: "{{ acme_certificate_account_keyfile }}"
-    challenge: dns-01
-    csr: "{{ _acme_certificate_domain_csrfile }}"
-    dest: "{{ _acme_certificate_domain_crtfile }}"
-    fullchain_dest: "{{ _acme_certificate_domain_chainfile }}"
-    data: "{{ acme_certificate_challenge }}"
-    terms_agreed: yes
-    acme_directory: "{{ acme_certificate_directory }}"
-  when: "'challenge_data' in acme_certificate_challenge"
+    - name: wait for txt record propagation
+      pause:
+        seconds: 60
+      when: "'challenge_data' in acme_certificate_challenge"
 
-- name: delete route53 txt record for certificate validation
-  route53:
-    command: delete
-    aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
-    aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
-    zone: "{{ acme_certificate_zone }}"
-    record: "{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['resource'] }}.{{ acme_certificate_zone }}"
-    retry_interval: 300
-    type: TXT
-    ttl: 7200
-    value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
-    wait: yes
-  when: "'challenge_data' in acme_certificate_challenge"
-  ignore_errors: yes
+    - name: validate challenge
+      acme_certificate:
+        account_key: "{{ acme_certificate_account_keyfile }}"
+        challenge: dns-01
+        csr: "{{ _acme_certificate_domain_csrfile }}"
+        dest: "{{ _acme_certificate_domain_crtfile }}"
+        fullchain_dest: "{{ _acme_certificate_domain_chainfile }}"
+        data: "{{ acme_certificate_challenge }}"
+        terms_agreed: yes
+        acme_directory: "{{ acme_certificate_directory }}"
+      when: "'challenge_data' in acme_certificate_challenge"
+
+  always:
+
+    - name: delete route53 txt record for certificate validation
+      route53:
+        command: delete
+        aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
+        aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
+        zone: "{{ acme_certificate_zone }}"
+        record: "{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['resource'] }}.{{ acme_certificate_zone }}"
+        retry_interval: 300
+        type: TXT
+        ttl: 7200
+        value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
+        wait: yes
+      when: "'challenge_data' in acme_certificate_challenge"
+      ignore_errors: yes
 
 - name: manage keyfile permissions
   file:
