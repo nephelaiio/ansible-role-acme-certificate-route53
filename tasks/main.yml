@@ -107,10 +107,9 @@
         data: "{{ acme_certificate_challenge }}"
         terms_agreed: yes
         acme_directory: "{{ acme_certificate_directory }}"
+        acme_version: "{{ acme_certificate_api_version }}"
       register: acme_validation_result
-      retries: 3
       delay: "{{ acme_certificate_challenge_ttl }}"
-      until: acme_validation_result is succeeded
       when: acme_certificate_challenge is changed
 
   always:
