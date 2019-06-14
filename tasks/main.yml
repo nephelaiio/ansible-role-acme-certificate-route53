@@ -58,6 +58,11 @@
       -subj "/CN={{ acme_certificate_domain }}"
   changed_when: false  # noqa 305
 
+- name: debug challenge record
+  debug:
+    msg: "{{ lookup('dig', acme_certificate_domain , qtype='TXT') }}"
+  when: acme_certificate_challenge is changed
+
 - name: create challenge
   acme_certificate:
     account_key: "{{ acme_certificate_account_keyfile }}"
@@ -66,6 +71,7 @@
     dest: "{{ _acme_certificate_domain_crtfile }}"
     fullchain_dest: "{{ _acme_certificate_domain_chainfile }}"
     terms_agreed: yes
+    acme_version: "{{ acme_certificate_api_version }}"
   register: acme_certificate_challenge
 
 - name: debug challenge
