@@ -68,6 +68,15 @@
     terms_agreed: yes
   register: acme_certificate_challenge
 
+- name: debug challenge
+  debug:
+    var: acme_certificate_challenge
+  when: debug | bool
+
+- name: install dns dependencies
+  pip:
+    name: dnspython
+
 - name: install route53 dependencies
   pip:
     name: boto
@@ -91,6 +100,11 @@
     - name: wait for txt record expiration
       pause:
         seconds: "{{ (acme_certificate_challenge_ttl | int) * 2 }}"
+      when: acme_certificate_challenge is changed
+
+    - name: debug challenge record
+      debug:
+        msg: "{{ lookup('dig', acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['record'] , qtype='TXT') }}"
       when: acme_certificate_challenge is changed
 
     - name: validate challenge
