@@ -12,6 +12,12 @@
   package:
     name: "{{ acme_certificate_packages }}"
 
+- name: install pip requirements
+  pip:
+    name:
+      - boto
+      - dnspython
+
 - name: create acme group
   group:
     name: "{{ acme_certificate_group }}"
@@ -77,14 +83,6 @@
   debug:
     var: acme_certificate_challenge
   when: debug | bool
-
-- name: install dns dependencies
-  pip:
-    name: dnspython
-
-- name: install route53 dependencies
-  pip:
-    name: boto
 
 - block:
 
