@@ -64,10 +64,6 @@
       -subj "/CN={{ acme_certificate_domain }}"
   changed_when: false  # noqa 305
 
-- name: debug challenge record
-  debug:
-    msg: "{{ lookup('dig', acme_certificate_domain , qtype='TXT') }}"
-
 - name: create challenge
   acme_certificate:
     account_key: "{{ acme_certificate_account_keyfile }}"
@@ -78,11 +74,6 @@
     terms_agreed: yes
     acme_version: "{{ acme_certificate_api_version }}"
   register: acme_certificate_challenge
-
-- name: debug challenge
-  debug:
-    var: acme_certificate_challenge
-  when: debug | bool
 
 - block:
 
@@ -103,11 +94,6 @@
     - name: wait for txt record expiration
       pause:
         seconds: "{{ (acme_certificate_challenge_ttl | int) * 2 }}"
-      when: acme_certificate_challenge is changed
-
-    - name: debug challenge record
-      debug:
-        msg: "{{ lookup('dig', acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['record'] , qtype='TXT') }}"
       when: acme_certificate_challenge is changed
 
     - name: validate challenge
