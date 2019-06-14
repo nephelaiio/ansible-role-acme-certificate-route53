@@ -6,7 +6,7 @@
         - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
         - "vars/{{ ansible_distribution }}.yml"
         - "vars/{{ ansible_os_family }}.yml"
-      skip: true
+        - "vars/main.yml"
 
 - name: install package requirements
   package:
@@ -80,19 +80,18 @@
         aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
         aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
         zone: "{{ acme_certificate_zone }}"
-        record: "{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['resource'] }}.{{ acme_certificate_domain }}"
-        retry_interval: 300
         type: TXT
-        ttl: 7200
+        record: '{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["record"] }}'
         value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
+        ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: yes
         overwrite: yes
-      when: "'challenge_data' in acme_certificate_challenge"
+      when: acme_certificate_challenge is changed
 
-    - name: wait for txt record propagation
+    - name: wait for txt record expiration
       pause:
-        seconds: 60
-      when: "'challenge_data' in acme_certificate_challenge"
+        seconds: "{{ (acme_certificate_challenge_ttl | int) * 2 }}"
+      when: acme_certificate_challenge is changed
 
     - name: validate challenge
       acme_certificate:
@@ -106,9 +105,9 @@
         acme_directory: "{{ acme_certificate_directory }}"
       register: acme_validation_result
       retries: 3
-      delay: 10
-      until: acme_validation_result | succeeded
-      when: "'challenge_data' in acme_certificate_challenge"
+      delay: "{{ acme_certificate_challenge_ttl }}"
+      until: acme_validation_result is succeeded
+      when: acme_certificate_challenge is changed
 
   always:
 
@@ -118,14 +117,12 @@
         aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
         aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
         zone: "{{ acme_certificate_zone }}"
-        record: "{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]['dns-01']['resource'] }}.{{ acme_certificate_zone }}"
-        retry_interval: 300
         type: TXT
-        ttl: 7200
+        record: '{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["record"] }}'
         value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
+        ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: yes
-      when: "'challenge_data' in acme_certificate_challenge"
-      ignore_errors: yes
+      when: acme_certificate_challenge is changed
 
 - name: manage keyfile permissions
   file:
