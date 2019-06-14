@@ -104,6 +104,10 @@
         data: "{{ acme_certificate_challenge }}"
         terms_agreed: yes
         acme_directory: "{{ acme_certificate_directory }}"
+      register: acme_validation_result
+      retries: 3
+      delay: 10
+      until: acme_validation_result | succeeded
       when: "'challenge_data' in acme_certificate_challenge"
 
   always:
