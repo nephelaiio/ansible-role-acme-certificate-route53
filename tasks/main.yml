@@ -61,7 +61,6 @@
 - name: debug challenge record
   debug:
     msg: "{{ lookup('dig', acme_certificate_domain , qtype='TXT') }}"
-  when: acme_certificate_challenge is changed
 
 - name: create challenge
   acme_certificate:
