@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: acme-certificate-route53
+  role_name: acme_certificate_route53
   author: Ted Cook
   description: An ansible role to generate acme certificates using dns challenges with route53
   license: MIT
