@@ -1,7 +1,7 @@
 # nephelaiio.acme-dnschallenge-route53
 
-[![Build Status](https://travis-ci.org/nephelaiio/ansible-role-acme-dnschallenge-route53.svg?branch=master)](https://travis-ci.org/nephelaiio/ansible-role-acme-dnschallenge-route53)
-[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.acme-dnschallenge-route53-blue.svg)](https://galaxy.ansible.com/nephelaiio/acme-dnschallenge-route53/)
+[![Build Status](https://travis-ci.org/nephelaiio/ansible-role-acme-certificate-route53.svg?branch=master)](https://travis-ci.org/nephelaiio/ansible-role-acme-certificate-route53)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.acme_certificate_route53-blue.svg)](https://galaxy.ansible.com/nephelaiio/acme_certificate_route53/)
 
 An [ansible role](https://galaxy.ansible.com/nephelaiio/acme-dnschallenge-route53) to issue acme certificates with dns challenge verification using route53 name service
 
