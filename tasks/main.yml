@@ -168,7 +168,7 @@
       changed_when: false
       when: ansible_os_family == 'RedHat'
 
-  when: acme_certificate_add_ca
+  when: acme_certificate_add_ca | bool
 
 - name: set certificate file link
   file:
