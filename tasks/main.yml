@@ -90,12 +90,10 @@
         ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: yes
         overwrite: yes
-      when: acme_certificate_challenge is changed
 
     - name: wait for txt record expiration
       pause:
         seconds: "{{ (acme_certificate_challenge_ttl | int) * 2 }}"
-      when: acme_certificate_challenge is changed
 
     - name: validate challenge
       acme_certificate:
@@ -110,7 +108,6 @@
         acme_version: "{{ acme_certificate_api_version }}"
       register: acme_validation_result
       delay: "{{ acme_certificate_challenge_ttl }}"
-      when: acme_certificate_challenge is changed
 
   always:
 
@@ -125,7 +122,8 @@
         value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
         ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: yes
-      when: acme_certificate_challenge is changed
+
+  when: acme_certificate_challenge is changed
 
 - name: manage keyfile permissions
   file:
