@@ -106,7 +106,6 @@
         terms_agreed: yes
         acme_directory: "{{ acme_certificate_directory }}"
         acme_version: "{{ acme_certificate_api_version }}"
-      register: acme_validation_result
       delay: "{{ acme_certificate_challenge_ttl }}"
 
   always:
