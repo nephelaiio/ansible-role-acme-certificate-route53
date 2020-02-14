@@ -17,6 +17,7 @@
     name:
       - boto
       - dnspython
+      - cryptography
 
 - name: create acme group
   group:
@@ -42,10 +43,16 @@
 - name: create account key
   openssl_privatekey:
     path: "{{ acme_certificate_account_keyfile }}"
+    owner: root
+    group: "{{ acme_certificate_group }}"
+    mode: 0640
 
 - name: create domain key
   openssl_privatekey:
     path: "{{ _acme_certificate_domain_keyfile }}"
+    owner: root
+    group: "{{ acme_certificate_group }}"
+    mode: 0640
 
 - name: create csr
   openssl_csr:
@@ -112,14 +119,6 @@
         wait: yes
 
   when: acme_certificate_challenge is changed
-
-- name: manage keyfile permissions
-  file:
-    path: "{{ _acme_certificate_domain_keyfile }}"
-    owner: root
-    group: "{{ acme_certificate_group }}"
-    mode: 0640
-    state: file
 
 - name: retrieve acme root ca file
   get_url:
