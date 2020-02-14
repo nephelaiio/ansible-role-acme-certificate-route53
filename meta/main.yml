@@ -9,15 +9,15 @@ galaxy_info:
     - name: EL
       versions:
         - 7
-    - name: Archlinux
-      versions:
-        - all
+        - 8
     - name: Ubuntu
       versions:
         - xenial
+        - bionic
     - name: Debian
       versions:
         - stretch
+        - buster
   galaxy_tags:
     - acme
     - certificate
