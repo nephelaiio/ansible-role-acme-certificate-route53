@@ -19,6 +19,9 @@ provisioner:
   lint:
     name: ansible-lint
   inventory:
+    host_vars:
+      bionic:
+        ansible_python_interpreter: /usr/bin/python3
     group_vars:
       all:
         acme_certificate_directory: https://acme-staging-v02.api.letsencrypt.org/directory
