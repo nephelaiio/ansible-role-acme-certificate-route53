@@ -162,8 +162,8 @@
   file:
     state: link
     src: "{{ _acme_certificate_domain_crtfile }}"
-    dest: "{{ acme_certificate_file }}"
-  when: acme_certificate_file is defined
+    dest: "{{ acme_certificate_certfile }}"
+  when: acme_certificate_certfile is defined
 
 - name: set certificate chain link
   file:
