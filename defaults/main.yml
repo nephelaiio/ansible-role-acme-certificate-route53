@@ -8,6 +8,7 @@ acme_certificate_packages_default:
     - openssh
 acme_certificate_storedir_default:
   debian: /usr/local/share/ca-certificates/letsencrypt
+  redhat: /etc/pki/ca-trust/source/anchors
 acme_certificate_group: acme
 acme_certificate_group_members: []
 acme_certificate_add_ca: "{{ certificate_add_ca | default(False) }}"
