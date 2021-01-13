@@ -1,9 +1,9 @@
 # nephelaiio.acme-dnschallenge-route53
 
-[![Build Status](https://travis-ci.org/nephelaiio/ansible-role-acme-certificate-route53.svg?branch=master)](https://travis-ci.org/nephelaiio/ansible-role-acme-certificate-route53)
+[![Build Status](https://github.com/nephelaiio/ansible-role-acme-certificate-route53/workflows/CI/badge.svg)](https://github.com/nephelaiio/ansible-role-acme-certificate-route53/actions)
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.acme_certificate_route53-blue.svg)](https://galaxy.ansible.com/nephelaiio/acme_certificate_route53/)
 
-An [ansible role](https://galaxy.ansible.com/nephelaiio/acme-dnschallenge-route53) to issue acme certificates with dns challenge verification using route53 name service
+An [ansible role](https://galaxy.ansible.com/nephelaiio/acme_certificate_route53) to issue acme certificates with dns challenge verification using route53 name service
 
 ## Role Variables
 
@@ -55,11 +55,10 @@ See the [https://raw.githubusercontent.com/nephelaiio/ansible-role-requirements/
 Please make sure your environment has [docker](https://www.docker.com) installed in order to run role validation tests. Additional python dependencies are listed in the [requirements file](/requirements.txt)
 
 Role is tested against the following distributions (docker images):
+  * Ubuntu Focal
   * Ubuntu Xenial
   * Ubuntu Bionic
   * CentOS 7
-  * CentOS 8
-  * Debian Stretch
   * Debian Buster
 
 You can test the role directly from sources using command ` molecule test `
