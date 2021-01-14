@@ -17,14 +17,6 @@
   package:
     name: "{{ _acme_certificate_packages }}"
 
-- name: install pip requirements
-  pip:
-    name:
-      - boto
-      - dnspython
-      - cryptography
-  changed_when: false
-
 - name: create acme group
   group:
     name: "{{ acme_certificate_group }}"
