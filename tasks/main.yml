@@ -3,6 +3,7 @@
   set_fact:
     _acme_certificate_packages: "{{ acme_certificate_packages | default(acme_certificate_packages_default | sorted_get(overrides)) }}"
     _acme_certificate_storedir: "{{ acme_certificate_storedir | default(acme_certificate_storedir_default | sorted_get(overrides)) }}"
+    _acme_certificate_pips: "{{ acme_certificate_pips | default(acme_certificate_pips_default | sorted_get(overrides)) }}"
   vars:
     overrides:
       - "{{ ansible_distribution | lower }}-{{ ansible_distribution_release | lower }}"
@@ -16,6 +17,13 @@
 - name: install package requirements
   package:
     name: "{{ _acme_certificate_packages }}"
+
+- name: install pip requirements
+  pip:
+    name: "{{ _acme_certificate_pips }}"
+  changed_when: false
+  when: _acme_certificate_pips != []
+
 
 - name: create acme group
   group:

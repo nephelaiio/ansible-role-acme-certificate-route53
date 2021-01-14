@@ -24,7 +24,10 @@ acme_certificate_packages_default:
     - python-boto
     - python-boto3
     - python-dns
-    - python2-cryptography
+acme_certificate_pips_default:
+  default: []
+  redhat:
+    - cryptography
 acme_certificate_storedir_default:
   debian: /usr/local/share/ca-certificates/letsencrypt
   redhat: /etc/pki/ca-trust/source/anchors
