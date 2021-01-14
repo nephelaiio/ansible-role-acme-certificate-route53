@@ -44,8 +44,8 @@ jobs:
       matrix:
         image:
           - ubuntu2004
-          - 1ubuntu804
-          - 1ubuntu604
+          - ubuntu1804
+          - ubuntu1604
           - debian10
           - centos7
     steps:
