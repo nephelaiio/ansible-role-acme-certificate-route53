@@ -56,7 +56,6 @@ Please make sure your environment has [docker](https://www.docker.com) installed
 
 Role is tested against the following distributions (docker images):
   * Ubuntu Focal
-  * Ubuntu Xenial
   * Ubuntu Bionic
   * CentOS 7
   * Debian Buster

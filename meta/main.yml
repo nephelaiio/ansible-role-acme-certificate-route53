@@ -13,7 +13,6 @@ galaxy_info:
       versions:
         - focal
         - bionic
-        - xenial
     - name: Debian
       versions:
         - buster
