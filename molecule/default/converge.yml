@@ -1,7 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  serial: 1
   pre_tasks:
     - name: update apt package cache
       apt:
