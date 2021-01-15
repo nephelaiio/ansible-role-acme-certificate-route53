@@ -26,6 +26,8 @@ acme_certificate_packages_default:
     - python-dns
 acme_certificate_pips_default:
   default: []
+  ubuntu-xenial:
+    - cryptography
   redhat:
     - cryptography
 acme_certificate_storedir_default:
