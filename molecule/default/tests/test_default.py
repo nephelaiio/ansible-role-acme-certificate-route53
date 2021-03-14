@@ -23,8 +23,8 @@ def test_key(host):
 
 def test_symlinks(host):
     certdir = "/etc/letsencrypt/live"
-    intcert = f"{certdir}/fakeleintermediatex1.pem"
-    cacert = f"{certdir}/fakelerootx1.pem"
+    intcert = f"{certdir}/letsencrypt-stg-int-r3.pem"
+    cacert = f"{certdir}/letsencrypt-stg-root-x1.pem"
     calink = "/tmp/cafile"
     intlink = "/tmp/intfile"
     crtlink = "/tmp/crtfile"
