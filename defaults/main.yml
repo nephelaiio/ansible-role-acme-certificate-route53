@@ -1,8 +1,17 @@
 ---
 acme_certificate_packages_default:
-  ubuntu-focal:
+  ubuntu-xenial:
     - openssl
     - openssh-client
+    - python-boto
+    - python-boto3
+    - python-dnspython
+  debian-buster:
+    - openssl
+    - openssh-client
+    - python-boto
+    - python-boto3
+    - python-dnspython
     - python3-boto
     - python3-boto3
     - python3-dnspython
@@ -10,9 +19,6 @@ acme_certificate_packages_default:
   debian:
     - openssl
     - openssh-client
-    - python-boto
-    - python-boto3
-    - python-dnspython
     - python3-boto
     - python3-boto3
     - python3-dnspython
@@ -44,6 +50,7 @@ acme_certificate_zone: "{{ acme_certificate_domain | split_with('.') | tail | jo
 acme_certificate_caurl: https://letsencrypt.org/certs/isrgrootx1.pem.txt
 acme_certificate_intcaurl: https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt
 acme_certificate_challenge_ttl: 30
+acme_certificate_challenge_wait: 60
 acme_certificate_api_version: 2
 _acme_certificate_domain_keyfile: "{{ acme_certificate_keydir }}/id_rsa.{{ acme_certificate_domain }}"
 _acme_certificate_domain_csrfile: "{{ acme_certificate_certdir }}/{{ acme_certificate_domain }}.csr"

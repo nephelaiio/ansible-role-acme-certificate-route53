@@ -1,1 +1,3 @@
-../../requirements.yml
+---
+- nephelaiio.plugins
+- geerlingguy.repo-epel

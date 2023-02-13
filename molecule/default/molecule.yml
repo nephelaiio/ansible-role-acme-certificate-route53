@@ -5,23 +5,21 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: "geerlingguy/docker-${MOLECULE_DOCKER_IMAGE:-ubuntu2004}-ansible:latest"
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    image: "geerlingguy/docker-${MOLECULE_DOCKER_IMAGE:-ubuntu2204}-ansible:latest"
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
+    privileged: false
     pre_build_image: true
+    cgroupns_mode: private
 provisioner:
   name: ansible
   log: true
-  playbooks:
-    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
   inventory:
     group_vars:
       all:
         acme_certificate_directory: https://acme-staging-v02.api.letsencrypt.org/directory
         acme_certificate_email: ci@nephelai.io
-        acme_certificate_domain: "route53-${MOLECULE_DOCKER_IMAGE:-ubuntu2004}.home.nephelai.io"
+        acme_certificate_domain: "route53-${MOLECULE_DOCKER_IMAGE:-ubuntu2204}.home.nephelai.io"
         acme_certificate_caurl: https://letsencrypt.org/certs/staging/letsencrypt-stg-root-x1.pem
         acme_certificate_intcaurl: https://letsencrypt.org/certs/staging/letsencrypt-stg-int-r3.pem
         acme_certificate_cafile: /tmp/cafile
@@ -33,4 +31,4 @@ provisioner:
 scenario:
   name: default
 verifier:
-  name: testinfra
+  name: ansible
