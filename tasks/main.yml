@@ -97,6 +97,10 @@
         ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: yes
         overwrite: yes
+      retries: 5
+      delay: 60
+      register: acme_validation
+      until: acme_validation is succeeded
 
     - name: wait for txt record replication
       ansible.builtin.pause:
@@ -128,6 +132,10 @@
         value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
         ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: yes
+      retries: 5
+      delay: 60
+      register: acme_validation
+      until: acme_validation is succeeded
 
 - name: retrieve acme root ca file
   ansible.builtin.get_url:
