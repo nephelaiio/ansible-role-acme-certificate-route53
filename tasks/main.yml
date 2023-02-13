@@ -98,9 +98,9 @@
         wait: yes
         overwrite: yes
 
-    - name: wait for txt record expiration
+    - name: wait for txt record replication
       ansible.builtin.pause:
-        seconds: "{{ (acme_certificate_challenge_ttl | int) * 2 }}"
+        seconds: "{{ acme_certificate_challenge_wait }}"
 
     - name: validate challenge
       community.crypto.acme_certificate:
