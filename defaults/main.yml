@@ -26,9 +26,9 @@ acme_certificate_packages_default:
   redhat:
     - openssl
     - openssh
-    - python-boto
-    - python-boto3
-    - python-dns
+    - python3-botocore
+    - python3-boto3
+    - python3-dns
 acme_certificate_pips_default:
   default: []
   redhat:
