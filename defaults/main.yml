@@ -1,18 +1,20 @@
 ---
 acme_certificate_packages_default:
-  ubuntu-focal:
-    - openssl
-    - openssh-client
-    - python3-boto
-    - python3-boto3
-    - python3-dnspython
-    - python3-cryptography
-  debian:
+  ubuntu-xenial:
     - openssl
     - openssh-client
     - python-boto
     - python-boto3
     - python-dnspython
+  debian-buster:
+    - openssl
+    - openssh-client
+    - python-boto
+    - python-boto3
+    - python-dnspython
+  debian:
+    - openssl
+    - openssh-client
     - python3-boto
     - python3-boto3
     - python3-dnspython
