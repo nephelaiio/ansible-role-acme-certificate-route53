@@ -1,7 +1,7 @@
 ---
 - name: set variable overrides
   ansible.builtin.set_fact:
-    _acme_certificate_packages: "{{ acme_certificate_packages | default(_pacakges_default) }}"
+    _acme_certificate_packages: "{{ acme_certificate_packages | default(_packages_default) }}"
     _acme_certificate_storedir: "{{ acme_certificate_storedir | default(_storedir_default) }}"
     _acme_certificate_pips: "{{ acme_certificate_pips | default(_pip_default) }}"
   vars:
