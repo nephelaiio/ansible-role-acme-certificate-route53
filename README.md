@@ -55,10 +55,12 @@ See the [https://raw.githubusercontent.com/nephelaiio/ansible-role-requirements/
 Please make sure your environment has [docker](https://www.docker.com) installed in order to run role validation tests. Additional python dependencies are listed in the [requirements file](/requirements.txt)
 
 Role is tested against the following distributions (docker images):
+  * Ubuntu Jammy
   * Ubuntu Focal
   * Ubuntu Bionic
-  * CentOS 7
+  * Debian Bullseye
   * Debian Buster
+  * CentOS 7
 
 You can test the role directly from sources using command ` molecule test `
 
