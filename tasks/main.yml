@@ -148,6 +148,7 @@
     - name: create acme ca root dir
       ansible.builtin.file:
         state: directory
+        mode: 0750
         dest: "{{ _acme_certificate_storedir }}"
 
     - name: copy acme root ca file to trust store
