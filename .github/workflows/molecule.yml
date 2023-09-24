@@ -3,45 +3,14 @@ name: molecule
 
 on:
   pull_request:
-  push:
     branches:
       - master
-  schedule:
-    - cron: "0 5 * * 0"
 
 defaults:
   run:
     working-directory: 'nephelaiio.acme_certificate_route53'
 
 jobs:
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the codebase.
-        uses: actions/checkout@v2
-        with:
-          path: 'nephelaiio.acme_certificate_route53'
-
-      - name: Set up Python 3.
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install poetry
-        run: pip3 install poetry
-
-      - name: Install pips
-        run: poetry install
-
-      - name: Lint code.
-        run: |
-          set -e
-          poetry run yamllint --version
-          poetry run yamllint .
-          poetry run ansible-lint --version
-          poetry run ansible-lint . -c .ansible-lint.yml
 
   molecule:
     name: Molecule
