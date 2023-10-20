@@ -1,3 +1,5 @@
 fileignoreconfig:
-- filename: poetry.lock
-  ignore_detectors: []
+  - filename: poetry.lock
+    ignore_detectors: [filecontent]
+  - filename: .github/workflows/release.yml
+    ignore_detectors: [filecontent]
