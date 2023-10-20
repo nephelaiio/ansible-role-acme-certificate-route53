@@ -1,5 +1,5 @@
 ---
-# - name: restart acme-dnschallenge-route53
+# - name: Restart acme-dnschallenge-route53
 #   become: yes
 #   service:
 #     name: "{{ item }}"
