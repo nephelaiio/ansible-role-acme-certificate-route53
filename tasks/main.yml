@@ -86,7 +86,7 @@
   block:
 
     - name: Create route53 txt record for certificate validation
-      community.aws.route53:
+      amazon.aws.route53:
         command: create
         aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
         aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
@@ -122,7 +122,7 @@
   always:
 
     - name: Delete route53 txt record for certificate validation
-      community.aws.route53:
+      amazon.aws.route53:
         command: delete
         aws_access_key: "{{ acme_certificate_aws_accesskey_id }}"
         aws_secret_key: "{{ acme_certificate_aws_accesskey_secret }}"
