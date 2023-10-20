@@ -1,0 +1,7 @@
+# This file contains ignores rule violations for ansible-lint
+meta/main.yml schema[meta]
+molecule/default/prepare.yml fqcn[action-core]
+molecule/default/requirements.yml schema[requirements]
+molecule/default/verify.yml no-changed-when
+tasks/main.yml jinja[invalid]
+tasks/main.yml no-handler
