@@ -1,6 +1,9 @@
 ---
 extends: default
 
+ignore: |
+  .cache/
+
 rules:
   braces:
     max-spaces-inside: 1
@@ -10,6 +13,9 @@ rules:
     level: error
   line-length: disable
   truthy: disable
-
-ignore: |
-  .cache/
+  comments-indentation: false
+  comments:
+    min-spaces-from-content: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true

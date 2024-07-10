@@ -2,8 +2,7 @@
 - name: Set variable overrides
   ansible.builtin.set_fact:
     _acme_certificate_packages: "{{ acme_certificate_packages | default(_packages_default) }}"
-    _acme_certificate_storedir: "{{ acme_certificate_storedir | default(_storedir_default) }}"
-    _acme_certificate_pips: "{{ acme_certificate_pips | default(_pip_default) }}"
+    _acme_certificate_storedir: "{{ acme_certificate_storedir | default(acme_certificate_storedir_default) }}"
   vars:
     overrides:
       - "{{ ansible_distribution | lower }}-{{ ansible_distribution_release | lower }}"
@@ -11,11 +10,9 @@
       - "{{ ansible_distribution | lower }}"
       - "{{ ansible_os_family | lower }}"
       - "default"
+    _storedir_default: "{{ (ansible_os_family == 'Debian') | ternary(acme_certificate_storedir_debian, acme_certificate_storedir_redhat) }}"
     _packages_default: "{{ acme_certificate_packages_default | sorted_get(overrides) }}"
-    _storedir_default: "{{ acme_certificate_storedir_default | sorted_get(overrides) }}"
-    _pip_default: "{{ acme_certificate_pips_default | sorted_get(overrides) }}"
-  tags:
-    - always
+  tags: always
 
 - name: Install package requirements
   ansible.builtin.package:
@@ -23,10 +20,9 @@
 
 - name: Install pip requirements
   ansible.builtin.pip:
-    name: "{{ _acme_certificate_pips }}"
+    name: cryptography
   changed_when: false
-  when: _acme_certificate_pips != []
-
+  when: ansible_os_family == 'RedHat'
 
 - name: Create acme group
   ansible.builtin.group:
@@ -42,7 +38,7 @@
 - name: Create acme folders
   ansible.builtin.file:
     path: "{{ item }}"
-    mode: 0755
+    mode: "u=rwx,go=rx"
     state: directory
     group: "{{ acme_certificate_group }}"
   loop:
@@ -54,14 +50,14 @@
     path: "{{ acme_certificate_account_keyfile }}"
     owner: root
     group: "{{ acme_certificate_group }}"
-    mode: 0640
+    mode: "u=rw,g=r,o="
 
 - name: Create domain key
   community.crypto.openssl_privatekey:
     path: "{{ _acme_certificate_domain_keyfile }}"
     owner: root
     group: "{{ acme_certificate_group }}"
-    mode: 0640
+    mode: "u=rw,g=r,o="
 
 - name: Create csr
   community.crypto.openssl_csr:
@@ -84,7 +80,6 @@
 - name: Validate acme challenge
   when: acme_certificate_challenge is changed
   block:
-
     - name: Create route53 txt record for certificate validation
       amazon.aws.route53:
         command: create
@@ -120,7 +115,6 @@
       delay: "{{ acme_certificate_challenge_ttl }}"
 
   always:
-
     - name: Delete route53 txt record for certificate validation
       amazon.aws.route53:
         command: delete
@@ -141,22 +135,21 @@
   ansible.builtin.get_url:
     url: "{{ acme_certificate_caurl }}"
     dest: "{{ acme_certificate_certdir }}/{{ _acme_certificate_cafile }}"
-    mode: 0644
+    mode: "u=rw,g=r,o=r"
 
 - name: Retrieve acme intermediate ca file
   ansible.builtin.get_url:
     url: "{{ acme_certificate_intcaurl }}"
     dest: "{{ acme_certificate_certdir }}/{{ _acme_certificate_intcafile }}"
-    mode: 0644
+    mode: "u=rw,g=r,o=r"
 
 - name: Configure local certificate chain
   when: acme_certificate_add_ca | bool
   block:
-
     - name: Create acme ca root dir
       ansible.builtin.file:
         state: directory
-        mode: 0750
+        mode: "u=rwx,g=rx,o="
         dest: "{{ _acme_certificate_storedir }}"
 
     - name: Copy acme root ca file to trust store
