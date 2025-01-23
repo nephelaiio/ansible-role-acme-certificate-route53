@@ -10,6 +10,9 @@ REQUIREMENTS = requirements.yml
 
 all: install version lint test
 
+test: lint
+	poetry run molecule test -s ${MOLECULE_SCENARIO}
+
 install:
 	@type poetry >/dev/null || pip3 install poetry
 	@poetry self add poetry-plugin-export
@@ -22,11 +25,11 @@ lint: install
 
 roles:
 	[ -f ${REQUIREMENTS} ] && yq '.$@[] | .name' -r < ${REQUIREMENTS} \
-		| xargs -L1 poetry run ansible-galaxy role install --force || exit 0
+		| xargs -r -L1 poetry run ansible-galaxy role install --force || exit 0
 
 collections:
 	[ -f ${REQUIREMENTS} ] && yq '.$@[]' -r < ${REQUIREMENTS} \
-		| xargs -L1 echo poetry run ansible-galaxy -vvv collection install --force || exit 0
+		| xargs -r -L1 echo poetry run ansible-galaxy -vvv collection install --force || exit 0
 
 requirements: roles collections
 

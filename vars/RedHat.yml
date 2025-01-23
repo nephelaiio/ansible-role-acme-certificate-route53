@@ -1,0 +1,10 @@
+# vim: sw=2 ts=2 et :
+---
+acme_certificate_storedir: /etc/pki/ca-trust/source/anchors
+acme_os_ca_file: /etc/pki/tls/certs/ca-bundle.crt
+acme_certificate_packages:
+  - openssl
+  - openssh
+  - python3-botocore
+  - python3-boto3
+  - python3-dns

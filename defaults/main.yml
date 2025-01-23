@@ -1,41 +1,4 @@
 ---
-acme_certificate_packages_default:
-  ubuntu-xenial:
-    - openssl
-    - openssh-client
-    - python-boto
-    - python-boto3
-    - python-dnspython
-  debian-buster:
-    - openssl
-    - openssh-client
-    - python-boto
-    - python-boto3
-    - python-dnspython
-    - python3-boto
-    - python3-boto3
-    - python3-dnspython
-    - python3-cryptography
-  debian:
-    - openssl
-    - openssh-client
-    - python3-boto
-    - python3-boto3
-    - python3-dnspython
-    - python3-cryptography
-  redhat:
-    - openssl
-    - openssh
-    - python3-botocore
-    - python3-boto3
-    - python3-dns
-acme_certificate_pips_default:
-  default: []
-  redhat:
-    - cryptography
-acme_certificate_storedir_default:
-  debian: /usr/local/share/ca-certificates/letsencrypt
-  redhat: /etc/pki/ca-trust/source/anchors
 acme_certificate_group: acme
 acme_certificate_group_members: []
 acme_certificate_add_ca: "{{ certificate_add_ca | default(False) }}"
@@ -44,23 +7,22 @@ acme_certificate_certdir: "{{ acme_certificate_basedir }}/live"
 acme_certificate_keydir: "{{ acme_certificate_basedir }}/keys"
 acme_certificate_account_keyfile: "{{ acme_certificate_keydir }}/id_rsa.letsencrypt"
 acme_certificate_domain: "{{ ansible_fqdn }}"
-acme_certificate_aws_accesskey_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-acme_certificate_aws_accesskey_secret: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
 acme_certificate_zone: "{{ acme_certificate_domain | split_with('.') | tail | join('.') }}"
-acme_certificate_caurl: https://letsencrypt.org/certs/isrgrootx1.pem.txt
-acme_certificate_intcaurl: https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt
-acme_certificate_challenge_ttl: 30
+# acme_certificate_caurl: https://letsencrypt.org/certs/isrgrootx1.pem.txt
+# acme_certificate_intcaurl: https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt
+acme_certificate_challenge_ttl: 1
 acme_certificate_challenge_wait: 60
 acme_certificate_api_version: 2
+acme_certificate_directory: https://acme-v02.api.letsencrypt.org/directory
 _acme_certificate_domain_keyfile: "{{ acme_certificate_keydir }}/id_rsa.{{ acme_certificate_domain }}"
 _acme_certificate_domain_csrfile: "{{ acme_certificate_certdir }}/{{ acme_certificate_domain }}.csr"
 _acme_certificate_domain_crtfile: "{{ acme_certificate_certdir }}/{{ acme_certificate_domain }}.crt"
 _acme_certificate_domain_chainfile: "{{ acme_certificate_certdir }}/{{ acme_certificate_domain }}.chain.crt"
-_acme_certificate_cafile: "{{ acme_certificate_caurl | urlsplit('path') | basename }}"
-_acme_certificate_intcafile: "{{ acme_certificate_intcaurl | urlsplit('path') | basename }}"
-acme_certificate_directory: https://acme-v02.api.letsencrypt.org/directory
 # acme_certificate_cafile: define to create symlink to issuing ca cert file
 # acme_certificate_intcafile: define to create symlink to issuing ca cert file
 # acme_certificate_certfile: define to create symlink to cert file
 # acme_certificate_chainfile: define to create symlink to certificate chain file
 # acme_certificate_keyfile: define to create symlink to key file
+
+# acme_certificate_aws_accesskey_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+# acme_certificate_aws_accesskey_secret: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"

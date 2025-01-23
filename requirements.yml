@@ -2,4 +2,5 @@
 roles:
   - nephelaiio.plugins
   - geerlingguy.repo-epel
-collections: []
+collections:
+  - amazon.aws

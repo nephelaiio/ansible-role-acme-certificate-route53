@@ -1,0 +1,11 @@
+# vim: sw=2 ts=2 et :
+---
+acme_certificate_storedir: /usr/local/share/ca-certificates/letsencrypt
+acme_os_ca_file: /etc/ssl/certs/ca-certificates.crt
+acme_certificate_packages:
+  - openssl
+  - openssh-client
+  - python3-boto
+  - python3-boto3
+  - python3-dnspython
+  - python3-cryptography

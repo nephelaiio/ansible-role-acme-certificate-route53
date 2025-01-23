@@ -13,21 +13,18 @@ platforms:
     cgroupns_mode: private
 provisioner:
   name: ansible
-  log: true
   inventory:
     group_vars:
       all:
         acme_certificate_directory: https://acme-staging-v02.api.letsencrypt.org/directory
         acme_certificate_email: ci@nephelai.io
         acme_certificate_domain: "route53-${MOLECULE_DOCKER_IMAGE:-ubuntu2204}.home.nephelai.io"
-        acme_certificate_caurl: https://letsencrypt.org/certs/staging/letsencrypt-stg-root-x1.pem
-        acme_certificate_intcaurl: https://letsencrypt.org/certs/staging/letsencrypt-stg-int-r3.pem
+        acme_certificate_aws_accesskey_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+        acme_certificate_aws_accesskey_secret: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
         acme_certificate_cafile: /tmp/cafile
-        acme_certificate_intcafile: /tmp/intfile
         acme_certificate_chainfile: /tmp/chainfile
         acme_certificate_certfile: /tmp/crtfile
         acme_certificate_keyfile: /tmp/keyfile
-        acme_certificate_challenge_ttl: 2
 scenario:
   name: default
 verifier:
