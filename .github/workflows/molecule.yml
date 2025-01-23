@@ -62,3 +62,5 @@ jobs:
           MOLECULE_DOCKER_IMAGE: ${{ matrix.image.name }}
           MOLECULE_DOCKER_COMMAND: ${{ matrix.image.command }}
           MOLECULE_SCENARIO: ${{ matrix.scenario.name }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

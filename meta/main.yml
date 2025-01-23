@@ -1,18 +1,18 @@
 ---
 galaxy_info:
   role_name: acme_certificate_route53
+  namespace: nephelaiio
   author: nephelaiio
-  description: An ansible role to generate acme certificates using dns challenges with route53
+  description: An ansible role to generate acme certificates using dns challenges with route53 dns
   license: MIT
-  min_ansible_version: 2.2
+  min_ansible_version: "2.10"
   platforms:
     - name: EL
       versions:
-        - 7
+        - all
     - name: Ubuntu
       versions:
-        - focal
-        - bionic
+        - all
     - name: Debian
       versions:
         - buster
