@@ -232,7 +232,7 @@
       ansible.builtin.get_url:
         url: "{{ acme_certificate_intcaurl }}"
         dest: "{{ acme_certificate_certdir }}/{{ _acme_certificate_intcafile }}"
-        mode: 0644
+        mode: "u=rw,go=r"
 
     - name: Set intca file link
       ansible.builtin.file:
