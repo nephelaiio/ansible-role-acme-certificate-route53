@@ -27,6 +27,10 @@
     virtualenv: "{{ _virtualenv_path }}"
   changed_when: false
 
+- name: Change python interpreter
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: "{{ _virtualenv_python }}"
+
 - name: Check AWS authentication params
   block:
     - name: Check acme_certificate_cf_account_token vardef
@@ -55,13 +59,6 @@
 - name: Install package requirements
   ansible.builtin.package:
     name: "{{ acme_certificate_packages }}"
-
-- name: Install pip requirements
-  ansible.builtin.pip:
-    name:
-      - dnspython
-      - cryptography
-  changed_when: false
 
 - name: Create acme group
   ansible.builtin.group:
