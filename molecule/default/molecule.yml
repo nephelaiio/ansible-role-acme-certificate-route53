@@ -53,5 +53,3 @@ provisioner:
         acme_certificate_keyfile: /tmp/keyfile
         acme_certificate_tempdir: /opt
         acme_certificate_validate_certs: false
-      server:
-        molecule_hostname: acme
