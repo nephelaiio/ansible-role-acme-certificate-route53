@@ -1,6 +1,6 @@
 ---
 - name: Verify
-  hosts: all
+  hosts: client
   tasks:
     - name: Query certificate issuer
       ansible.builtin.shell: "openssl x509 -in {{ cert_file }} -noout -text | grep Issuer:"

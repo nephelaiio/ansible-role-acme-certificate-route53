@@ -7,17 +7,33 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: "acme-certificate-route53-${MOLECULE_SCENARIO}"
+  - name: "acme-client"
     image: "geerlingguy/docker-${MOLECULE_DOCKER_IMAGE:-ubuntu2204}-ansible:latest"
     command: ${MOLECULE_COMMAND:-"/lib/systemd/systemd"}
     cgroupns_mode: host
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    networks:
+      - name: acme
     privileged: true
     pre_build_image: true
     tmpfs:
       - /tmp
       - /run
+    groups:
+      - client
+  - name: "acme-server"
+    image: "ghcr.io/letsencrypt/pebble:latest"
+    command: "-strict"
+    networks:
+      - name: acme
+    ports:
+      - "14000:14000"
+      - "15000:15000"
+    privileged: false
+    pre_build_image: true
+    groups:
+      - server
 provisioner:
   name: ansible
   config_options:
@@ -25,8 +41,8 @@ provisioner:
       callbacks_enabled: ansible.posix.profile_tasks
   inventory:
     group_vars:
-      all:
-        acme_certificate_directory: https://acme-staging-v02.api.letsencrypt.org/directory
+      client:
+        acme_certificate_directory: https://acme-server:14000/dir
         acme_certificate_email: ci@nephelai.io
         acme_certificate_domain: "route53-${MOLECULE_DOCKER_IMAGE:-ubuntu2204}.home.nephelai.io"
         acme_certificate_aws_accesskey_id: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
@@ -36,3 +52,5 @@ provisioner:
         acme_certificate_file: /tmp/crtfile
         acme_certificate_keyfile: /tmp/keyfile
         acme_certificate_tempdir: /opt
+      server:
+        molecule_hostname: acme
