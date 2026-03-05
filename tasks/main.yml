@@ -106,7 +106,7 @@
 - name: Create acme challenge
   community.crypto.acme_certificate:
     account_key: "{{ acme_certificate_account_keyfile }}"
-    modify_account: false
+    modify_account: true
     challenge: dns-01
     csr: "{{ _acme_certificate_domain_csrfile }}"
     dest: "{{ _acme_certificate_domain_crtfile }}"
