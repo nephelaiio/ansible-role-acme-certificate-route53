@@ -1,6 +1,6 @@
 ---
 roles:
-  - nephelaiio.plugins
   - geerlingguy.repo-epel
 collections:
+  - nephelaiio.plugins
   - amazon.aws

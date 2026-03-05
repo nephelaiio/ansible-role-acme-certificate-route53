@@ -1,4 +1,39 @@
 ---
+- name: Install virtualenv
+  ansible.builtin.package:
+    name: "{{ (ansible_os_family == 'Debian') | ternary('virtualenv', 'python-virtualenv') }}"
+
+- name: Create virtualenv
+  ansible.builtin.tempfile:
+    path: "{{ acme_certificate_tempdir }}"
+    state: directory
+    suffix: virtualenv
+  register: _virtualenv_tmpdir
+  changed_when: false
+
+- name: Set virtualenv facts
+  ansible.builtin.set_fact:
+    _virtualenv_path: "{{ _path }}"
+    _virtualenv_python: "{{ _python }}"
+  vars:
+    _path: "{{ _virtualenv_tmpdir.path }}/venv"
+    _python: "{{ _path }}/bin/python"
+
+- name: Initialize virtualenv
+  ansible.builtin.pip:
+    name:
+      - packaging
+      - botocore
+      - boto3
+      - dnspython
+      - cryptography
+    virtualenv: "{{ _virtualenv_path }}"
+  changed_when: false
+
+- name: Change python interpreter
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: "{{ _virtualenv_python }}"
+
 - name: Check AWS authentication params
   block:
     - name: Check acme_certificate_cf_account_token vardef
@@ -22,24 +57,11 @@
   when: acme_certificate_add_ca | bool
 
 - name: Include variable overrides
-  ansible.builtin.include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-        - "vars/{{ ansible_distribution }}.yml"
-        - "vars/{{ ansible_os_family }}.yml"
-        - "vars/main.yml"
+  ansible.builtin.include_vars: "vars/{{ ansible_os_family }}.yml"
 
 - name: Install package requirements
   ansible.builtin.package:
     name: "{{ acme_certificate_packages }}"
-
-- name: Install pip requirements
-  ansible.builtin.pip:
-    name:
-      - dnspython
-      - cryptography
-  changed_when: false
 
 - name: Create acme group
   ansible.builtin.group:
@@ -85,6 +107,7 @@
 - name: Create acme challenge
   community.crypto.acme_certificate:
     account_key: "{{ acme_certificate_account_keyfile }}"
+    modify_account: true
     challenge: dns-01
     csr: "{{ _acme_certificate_domain_csrfile }}"
     dest: "{{ _acme_certificate_domain_crtfile }}"
@@ -92,6 +115,7 @@
     terms_agreed: true
     acme_version: "{{ acme_certificate_api_version }}"
     acme_directory: "{{ acme_certificate_directory }}"
+    validate_certs: "{{ acme_certificate_validate_certs }}"
   register: acme_certificate_challenge
 
 - name: Validate acme challenge
@@ -109,8 +133,8 @@
         ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: true
         overwrite: true
-      retries: 5
-      delay: 60
+      retries: "{{ acme_certificate_challenge_retry }}"
+      delay: "{{ acme_certificate_challenge_delay }}"
       register: acme_validation
       until: acme_validation is succeeded
 
@@ -121,6 +145,7 @@
     - name: Validate challenge
       community.crypto.acme_certificate:
         account_key: "{{ acme_certificate_account_keyfile }}"
+        modify_account: false
         challenge: dns-01
         csr: "{{ _acme_certificate_domain_csrfile }}"
         dest: "{{ _acme_certificate_domain_crtfile }}"
@@ -129,7 +154,9 @@
         terms_agreed: true
         acme_directory: "{{ acme_certificate_directory }}"
         acme_version: "{{ acme_certificate_api_version }}"
-      delay: "{{ acme_certificate_challenge_ttl }}"
+        validate_certs: "{{ acme_certificate_validate_certs }}"
+      retries: "{{ acme_certificate_challenge_retry }}"
+      delay: "{{ acme_certificate_challenge_delay }}"
 
   always:
     - name: Delete route53 dns challenge record
@@ -143,8 +170,8 @@
         value: '"{{ acme_certificate_challenge.challenge_data[acme_certificate_domain]["dns-01"]["resource_value"] }}"'
         ttl: "{{ acme_certificate_challenge_ttl }}"
         wait: true
-      retries: 5
-      delay: 60
+      retries: "{{ acme_certificate_challenge_retry }}"
+      delay: "{{ acme_certificate_challenge_delay }}"
       register: acme_validation
       until: acme_validation is succeeded
 
@@ -209,7 +236,7 @@
       ansible.builtin.get_url:
         url: "{{ acme_certificate_intcaurl }}"
         dest: "{{ acme_certificate_certdir }}/{{ _acme_certificate_intcafile }}"
-        mode: 0644
+        mode: "u=rw,go=r"
 
     - name: Set intca file link
       ansible.builtin.file:

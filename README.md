@@ -10,36 +10,37 @@ An [ansible role](https://galaxy.ansible.com/nephelaiio/acme_certificate_route53
 The most common user overridable parameters for the role are
 
 | required | variable                              | description                                       | default                                        |
-| ---      | ---                                   | ---                                               | ---                                            |
-| *yes*    | acme_certificate_domain               | the fqdn to generate an acme certificate for      | ansible_fqdn                                   |
-| *yes*    | acme_certificate_aws_accesskey_id     | an ec2 key id with route53 management rights      | lookup('env', 'AWS_ACCESS_KEY_ID')             |
-| *yes*    | acme_certificate_aws_accesskey_secret | an ec2 key secret                                 | lookup('env', 'AWS_SECRET_ACCESS_KEY')         |
+| -------- | ------------------------------------- | ------------------------------------------------- | ---------------------------------------------- |
+| _yes_    | acme_certificate_domain               | the fqdn to generate an acme certificate for      | ansible_fqdn                                   |
+| _yes_    | acme_certificate_aws_accesskey_id     | an ec2 key id with route53 management rights      | lookup('env', 'AWS_ACCESS_KEY_ID')             |
+| _yes_    | acme_certificate_aws_accesskey_secret | an ec2 key secret                                 | lookup('env', 'AWS_SECRET_ACCESS_KEY')         |
 | no       | acme_certificate_group_members        | certificate file group members                    | []                                             |
 | no       | acme_certificate_add_ca               | add acme ca to the                                | false                                          |
 | no       | acme_certificate_directory            | url to ca directory                               | https://acme-v01.api.letsencrypt.org/directory |
-| no       | acme_certificate_cafile (*)           | symlink path to issuing ca cert file              | _undefined_                                    |
-| no       | acme_certificate_intcafile (*)        | symlink path to issuing intermediate ca cert file | _undefined_                                    |
-| no       | acme_certificate_certfile (*)         | symlink path to cert file                         | _undefined_                                    |
-| no       | acme_certificate_chainfile (*)        | symlink path to certificate chain file            | _undefined_                                    |
-| no       | acme_certificate_keyfile (*)          | symlink path to certificate key file              | _undefined_                                    |
+| no       | acme_certificate_cafile (\*)          | symlink path to issuing ca cert file              | _undefined_                                    |
+| no       | acme_certificate_intcafile (\*)       | symlink path to issuing intermediate ca cert file | _undefined_                                    |
+| no       | acme_certificate_certfile (\*)        | symlink path to cert file                         | _undefined_                                    |
+| no       | acme_certificate_chainfile (\*)       | symlink path to certificate chain file            | _undefined_                                    |
+| no       | acme_certificate_keyfile (\*)         | symlink path to certificate key file              | _undefined_                                    |
 
 You can view an example redefinition of some of the above parameters, most notably the ones concerning certificate ca in the [CI test configuration file](/molecule/default/molecule.yml)
 
-(*) useful for backwards compatibility with existing nginx/apache configurations
+(\*) useful for backwards compatibility with existing nginx/apache configurations
 
 Please refer to the [defaults file](/defaults/main.yml) for an up to date list of input parameters.
 
 ## Dependencies
 
-* [geerlingguy.repo-epel](https://github.com/geerlingguy/ansible-role-repo-epel)
-* [nephelaiio.plugins](https://github.com/nephelaiio/ansible-role-plugins)
+- [geerlingguy.repo-epel](https://github.com/geerlingguy/ansible-role-repo-epel)
+- [nephelaiio.plugins](https://github.com/nephelaiio/ansible-role-plugins)
 
 See the [https://raw.githubusercontent.com/nephelaiio/ansible-role-requirements/master/requirements.txt](requirements) and [meta.yml](meta) files for more details
 
 ## Example Playbook
 
 ```
-- hosts: servers
+- name: Create acme certificate with route53 dns challenge
+  hosts: all
   vars:
     acme_certificate_email: ci@nephelai.io
     acme_certificate_domain: "{{ ansible_fqdn }}"
@@ -54,14 +55,15 @@ See the [https://raw.githubusercontent.com/nephelaiio/ansible-role-requirements/
 Please make sure your environment has [docker](https://www.docker.com) installed in order to run role validation tests. Additional python dependencies are listed in the [requirements file](/requirements.txt)
 
 Role is tested against the following distributions (docker images):
-  * Ubuntu Jammy
-  * Ubuntu Focal
-  * Ubuntu Bionic
-  * Debian Bullseye
-  * Debian Buster
-  * Rocky Linux 9
 
-You can test the role directly from sources using command ` molecule test `
+- Ubuntu Noble
+- Ubuntu Jammy
+- Ubuntu Focal
+- Debian Bullseye
+- Debian Bookworm
+- Debian Trixie
+
+You can test the role directly from sources using command `molecule test`
 
 ## License
 
